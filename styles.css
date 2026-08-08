@@ -1,0 +1,20 @@
+:root {
+    --bg: #111;
+    --fg: #fef;
+}
+* {
+    font-family: Helvetica, Arial, sans-serif;
+    color: var(--fg)
+}
+body {
+    background-color: var(--bg);
+}
+.game-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.game {
+    background-color: #0000;
+    border-radius: 40px;
+}

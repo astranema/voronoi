@@ -10,60 +10,69 @@ function Vector2d(x, y) {
     this.y = y;
 }
 
+// object colorRange
+function ColorRange(rMin, rMax, gMin, gMax, bMin, bMax) {
+    this.rMin = rMin;
+    this.rMax = rMax;
+    this.gMin = gMin;
+    this.gMax = gMax;
+    this.bMin = bMin;
+    this.bMax = bMax;
+}
+
 function main() {
     const canvas = document.getElementById("world");
-    const points = [];
-    points.push(makeRandomPoint(canvas.width, canvas.height));
-    render(canvas, points);
+    const numPointsSlider = document.getElementById("num-points");
+    const redMinSlider = document.getElementById("red-min");
+    const redMaxSlider = document.getElementById("red-max");
+    const greenMinSlider = document.getElementById("green-min");
+    const greenMaxSlider = document.getElementById("green-max");
+    const blueMinSlider = document.getElementById("blue-min");
+    const blueMaxSlider = document.getElementById("blue-max");
+    const colorRange = new ColorRange();
+    getColorRangeFromSliders(colorRange, redMinSlider, redMaxSlider, greenMinSlider, greenMaxSlider, blueMinSlider, blueMaxSlider);
+    generate(canvas, colorRange, numPointsSlider.value);
     canvas.addEventListener("click", function() {
-        points.push(makeRandomPoint(canvas.width, canvas.height));
-        render(canvas, points);
-    })
+        getColorRangeFromSliders(colorRange, redMinSlider, redMaxSlider, greenMinSlider, greenMaxSlider, blueMinSlider, blueMaxSlider);
+        generate(canvas, colorRange, numPointsSlider.value);
+    });
+}
+
+function getColorRangeFromSliders(colorRange, redMin, redMax, greenMin, greenMax, blueMin, blueMax) {
+    colorRange.rMin = Number(redMin.value);
+    colorRange.rMax = Number(redMax.value);
+    colorRange.gMin = Number(greenMin.value);
+    colorRange.gMax = Number(greenMax.value);
+    colorRange.bMin = Number(blueMin.value);
+    colorRange.bMax = Number(blueMax.value);
+}
+
+function generate(canvas, colorRange, numPoints) {
+    const points = [];
+    for (let i = 0; i < numPoints; i++) {
+        points.push(makeRandomPoint(canvas.width, canvas.height, colorRange));
+    }
+    render(canvas, points);
 }
 
 // returns int
-function getRandomNum(max) {
-    return Math.floor(Math.random() * max);
+function getRandomNum(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 // returns string
-function getRandomColor() {
-    let color = ""
-    for (i = 0; i < 6; i++) {
-        const nextNum = getRandomNum(16);
-        let nextChar;
-        switch (nextNum) {
-            case 10:
-                nextChar = "a";
-                break;
-            case 11:
-                nextChar = "b";
-                break;
-            case 12:
-                nextChar = "c";
-                break;
-            case 13:
-                nextChar = "d";
-                break;
-            case 14:
-                nextChar = "e";
-                break;
-            case 15:
-                nextChar = "f";
-                break;
-            default:
-                nextChar = String(nextNum);
-        }
-        color += nextChar;
-    }
-    return color;
+function getRandomColor(colorRange) {
+    let red = getRandomNum(colorRange.rMin, colorRange.rMax);
+    let green = getRandomNum(colorRange.gMin, colorRange.gMax);
+    let blue = getRandomNum(colorRange.bMin, colorRange.bMax);
+    return "rgb(" + String(red) + " " + String(green) + " " + String(blue) + ")";
 }
 
 // returns Point (maxX and maxY are exclusive)
-function makeRandomPoint(maxX, maxY) {
-    const x = getRandomNum(maxX);
-    const y = getRandomNum(maxY);
-    const color = getRandomColor();
+function makeRandomPoint(maxX, maxY, colorRange) {
+    const x = getRandomNum(0, maxX);
+    const y = getRandomNum(0, maxY);
+    const color = getRandomColor(colorRange);
     return new Point(x, y, color);
 }
 
@@ -81,7 +90,7 @@ function render(canvas, points) {
                     closestPoint = points[i];
                 }
             }
-            ctx.fillStyle = "#" + closestPoint.color;
+            ctx.fillStyle = closestPoint.color;
             ctx.fillRect(x, y, 1, 1);
         }
     }
@@ -90,6 +99,5 @@ function render(canvas, points) {
 function findDistance(x1, y1, x2, y2) {
     return Math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
 }
-
 
 main();

@@ -11,14 +11,14 @@
             <h1>Voronoi</h1>
         </div>
         <p class="description">
-            A simple Voronoi diagram simulator. Press the image to reset it, or use the sliders to change the settings!
+            A simple Voronoi diagram simulator. Press the image to reset it, or use the sliders to change the settings! <b> WARNING: SETTING THE NUMBER OF POINTS ABOVE THE DEFAULT WILL HURT PERFORMANCE.</b> It <em>will</em> look cool though.
         </p>
         <div class="game-holder">
             <canvas id="world" class="game" id="game" width="1000" height="600"></canvas>
         </div>
         <div class="sliders-holder">
             <p>Number of points</p>
-            <input type="range" min="1" max="1000" value="3" id="num-points" class="slider">
+            <input type="range" min="1" max="1000" value="15" id="num-points" class="slider">
             <p>Minimum red</p>
             <input type="range" min="0" max="255" value="0" id="red-min" class="slider">
             <p>Maximum red</p>

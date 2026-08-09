@@ -35,3 +35,12 @@ body {
     font-size: 1.2em;
     margin-top: 0%;
 }
+.slider-red {
+    accent-color: #d33;
+}
+.slider-green {
+    accent-color: #181;
+}
+.slider-blue {
+    accent-color: #35d;
+}
